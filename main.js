@@ -1,27 +1,26 @@
-const toast = document.querySelector('#toasts');
+const toasts = document.querySelector('#toasts');
 const button = document.querySelector('#button');
 
-const words = ['Something went wrong', 'You should fix it', 'The stuff don\'t works anymore', 'I\'m so sorry but it is impossible'];
-const colors = ['red', 'green', 'blue', 'orange', 'pink', 'purple'];
+const messages = ['Something went wrong', 'You should fix it', 'The stuff don\'t works anymore', 'I\'m so sorry but it is impossible'];
+const types = ['info', 'success', 'error'];
 
-button.addEventListener('click', ()=> {
+button.addEventListener('click', ()=> createNotification());
 
-    const message = Math.round(Math.random() * (words.length - 1));
-    const messageEl = document.createElement('div');
-    messageEl.innerText = words[message];
-    messageEl.classList.add('toast');
-    messageEl.style.backgroundColor = colors[Math.round(Math.random() * (colors.length - 1))];
-    toast.appendChild(messageEl);
-    console.log (message);
-    console.log (messageEl);
-    setTimeout(removeToast, 5000);
+function createNotification(message = null, type = null){
+    const notification = document.createElement('div');
+    notification.classList.add('toast');
+    notification.classList.add(type ? type : getRandomType());
+    notification.innerText = message ? message : getRandomMessage();
+    toasts.appendChild(notification);
+    setTimeout(()=> {
+        notification.remove()
+    }, 3000)
+}
 
-})
+function getRandomMessage(){
+    return messages[Math.floor(Math.random() * messages.length)];
+}
 
-function removeToast(){
-    const toasts = document.querySelectorAll('.toast');
-    if (toasts.length > 0){
-        const firstToast = toasts[0];
-        toast.removeChild(firstToast);
-    }
+function getRandomType(){
+    return types[Math.floor(Math.random() * types.length)];
 }
